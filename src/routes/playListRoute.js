@@ -1,12 +1,12 @@
 const router = require("express").Router();
-const authToken = require("../middelwares/verifyAuthToken");
+const verifyAuthToken = require("../middelwares/verifyAuthToken");
 const {createPlaylist,addSongToPlaylist,getPlaylists} = require("../controllers/playlistController")
 
 
-router.post("/createPlaylist",authToken,createPlaylist);
+router.post("/createPlaylist",verifyAuthToken,createPlaylist);
 
-router.post("/add_songs", authToken,addSongToPlaylist );
+router.post("/add_songs", verifyAuthToken,addSongToPlaylist );
 
-router.get("/getPlaylists", authToken, getPlaylists);
+router.get("/getPlaylists", verifyAuthToken, getPlaylists);
 
 module.exports = router;

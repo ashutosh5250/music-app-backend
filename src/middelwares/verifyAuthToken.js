@@ -1,21 +1,19 @@
 const jwt = require('jsonwebtoken');
-const User = require("../models/usersModel");
 require("dotenv").config();
-const authToken = async (req, res, next) => {
+
+const verifyAuthToken = (req, res, next) => {
+    const authHeader = req.headers.Authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).send({ error: 'Token not provided or invalid.' });
+    }
+    const token = authHeader.split(' ')[1];
     try {
-        const token = req.header('Authorization').replace('Bearer ', '');
-        const decoded = jwt.verify(token, process.env.PRIVATEKEY); 
-        const user = await User.findOne({ _id: decoded.id });
-
-        if (!user) {
-            throw new Error();
-        }
-
-        req.user = user; 
+        const decoded = jwt.verify(token, process.env.PRIVATEKEY);
+        req.user = decoded; 
         next();
-    } catch (err) {
-        res.status(401).send({ error: 'Please authenticate.' });
+    } catch (error) {
+        console.error('Token verification error:', error.message); 
+        return res.status(401).send({ error: 'Invalid token.' });
     }
 };
-
-module.exports = authToken;
+module.exports = verifyAuthToken
