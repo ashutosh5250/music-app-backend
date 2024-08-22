@@ -16,7 +16,7 @@ app.use(helmet())
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/auth", authRouter);
+app.use("/auth", authRouter);
 app.use("/song", songRouter);
 app.use("/playlists", playlistRouter)
 app.listen(PORT,()=>{
