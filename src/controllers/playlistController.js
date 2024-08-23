@@ -43,5 +43,20 @@ const getPlaylists = async (req, res) => {
     }
 };
 
+ const getsongInPlaylist = async (req, res) => {
+    try {
+      const { playlistId } = req.params;
+      const playlist = await Playlist.findById(playlistId).populate('songs');
+      if (!playlist) {
+        return res.status(404).json({ message: 'Playlist not found' });
+      }
+      res.status(200).json(playlist.songs);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  }
+  
+  
 
-module.exports ={createPlaylist,addSongToPlaylist,getPlaylists}
+module.exports ={createPlaylist,addSongToPlaylist,getPlaylists,getsongInPlaylist}
