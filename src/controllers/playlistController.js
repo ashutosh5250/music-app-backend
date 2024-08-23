@@ -50,6 +50,7 @@ const getPlaylists = async (req, res) => {
       if (!playlist) {
         return res.status(404).json({ message: 'Playlist not found' });
       }
+      console.log(playlist)
       res.status(200).json(playlist.songs);
     } catch (error) {
       console.error(error);
